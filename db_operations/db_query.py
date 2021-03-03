@@ -144,7 +144,7 @@ class db_query(object):
             # Get field name and field type
             sql_text0 = 'select sc.name,st.name from syscolumns sc,systypes st ' \
                         'where sc.xtype=st.xtype and sc.id in(select id from sysobjects ' \
-                        'where xtype=\'U\' and name=\'%s\') order by sc.colid;' % (tab_name)
+                        'where name=\'%s\') order by sc.colid;' % (tab_name)
             self.cur.execute(sql_text0)
             column_need = self.cur.fetchall()
             df_col0 = pd.DataFrame(column_need)
@@ -159,6 +159,8 @@ class db_query(object):
                              else each[0].decode('utf-8') for each in comment_need]
             df_comments = pd.DataFrame(comment_need1)
             df_col = pd.concat([df_col0, df_comments], axis=1, ignore_index=True)
+
+        df_col = df_col.drop_duplicates(subset=[0], keep='first').reset_index()
 
         return df_col
 
