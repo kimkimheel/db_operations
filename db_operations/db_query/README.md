@@ -1,4 +1,6 @@
-## **README(中文版见后)**
+## **README**
+
+[TOC]
 
 This is a small tool that simplifies daily operations. Hope it can be of some help.
 
@@ -10,25 +12,25 @@ The following are some simple examples of program applications. If you encounter
 
 #### Use example：
 
--  **Installation**
+##### -  **Installation**
 
   ```python
-  pip install db_query
+  pip install db_operations
   ```
 ---
 
-- **Connect to the database**
+##### - **Connect to the database**
 
   **Parameters:**
 
-  |  parameter  | type |                         description                          |
-  | :---------: | :--: | :----------------------------------------------------------: |
-  |   db_type   | str  |                     the type of database                     |
-  |     ip      | str  |                      the ip of database                      |
-  |    port     | int  |                     the port of database                     |
-  |    user     | str  |             User name to connect to the database             |
-  |     key     | str  |               Password to connect to database                |
-  | dborsv_name | str  | database name or a combination of service name and schema name |
+|  parameter  | type |                         description                          |
+| :---------: | :--: | :----------------------------------------------------------: |
+|   db_type   | str  |                     the type of database                     |
+|     ip      | str  |                      the ip of database                      |
+|    port     | int  |                     the port of database                     |
+|    user     | str  |             User name to connect to the database             |
+|     key     | str  |               Password to connect to database                |
+| dborsv_name | str  | database name or a combination of service name and schema name |
 
   Take mysql as an example:
 
@@ -53,7 +55,8 @@ The following are some simple examples of program applications. If you encounter
   
   ```
 
--  **Close the connection (NOTE! Close the database in time when it is used up, otherwise it may cause the database process to get stuck）**
+##### -  **Close the connection** 
+(**NOTE!** Close the database in time when it is used up, otherwise it may cause the database process to get stuck）
 
   ```python
   con.con_close()
@@ -64,7 +67,7 @@ The following are some simple examples of program applications. If you encounter
 ---
 
 
-- **Query all table names in the database**
+##### -  **Query all table names in the database**
 
   **Parameters:** None
 
@@ -73,8 +76,8 @@ The following are some simple examples of program applications. If you encounter
   ```python
   tab_list = con.ob_table_list()
   ```
-  
--   **Query the number of records in the table**
+
+##### -  **Query the number of records in the table**
 
   **Parameters:** 
 
@@ -85,8 +88,8 @@ The following are some simple examples of program applications. If you encounter
   ```python
   rec_num = con.ob_recnum('tab_name')
   ```
-  
--  **Query the field information of the table**
+
+##### -  **Query the field information of the table**
 
   **Parameters:** 
 
@@ -98,19 +101,19 @@ The following are some simple examples of program applications. If you encounter
   col_inf = con.ob_colinfo(‘tab_name’)
   ```
 
-- **Query the comment information of the table**
+##### - **Query the comment information of the table**
 
    **Parameters:** 
 
     *tab_name*: str , The name of the table to be queried
-
+    
     *return*: The comment information of the table
 
   ```python
   tab_com = con. ob_tabcom(‘tab_name’)
   ```
-  
-- **Query the data in the table**
+
+##### - **Query the data in the table**
 **Parameters:** 
 
     *tab_name*: str , The name of the table to be queried
@@ -123,8 +126,8 @@ The following are some simple examples of program applications. If you encounter
    data = con.ob_data('tab_name',head_num=0)
    ```
 ---
-- **Perform database-related operations**
-  
+##### - **Perform database-related operations**
+
     **Parameters:** 
     
     *sql_text*: str , SQL statements to be executed(such as add, delete, modify and check operations)
@@ -135,7 +138,7 @@ The following are some simple examples of program applications. If you encounter
     con_exe(sql_text)
     ```
 
-- **SQL statement query**
+##### - **SQL statement query**
 
   **Parameters:** 
 
@@ -145,30 +148,30 @@ The following are some simple examples of program applications. If you encounter
     ```python
     con_exe(sql_text)
     ```
-  
+
 
 ---
 
--  **Generate hive table building statement based on field information**
+##### -  **Generate hive table building statement based on field information**
 
   When data is migrated to hive, it is sometimes necessary to generate hive table building statements based on the query information of the original database.
 
   **Parameters:** 
-  
+
      *tab_name*: str , The name of the table to be queried
-  
+      
      *table_type*: int , 0 means to build an intermediate table in hive,1 means to build a transaction table in hive
-  
+      
      *return*: SQL statement in string format
-  
+
   **1. Table creation statement of the intermediate table**
 
   ```python
   sql_text = con.create_hivetab(‘tab_name’,0)
   ```
-  
+
   Examples of intermediate table creation statement：
-  
+
   ```sql
   CREATE TABLE IF NOT EXISTS `GRADE _M`(`st_id` INT comment '主键',
   `st_name` STRING comment '学生姓名 ',
@@ -177,15 +180,15 @@ The following are some simple examples of program applications. If you encounter
   `st_img` STRING comment '档案照片 ')ROW FORMAT DELIMITED FIELDS TERMINATED BY ","
   
   ```
-  
+
    **2. The final table build statement**
-  
+
   ```python
   sql_text = con.create_hivetab(‘tab_name’,1)
   ```
-  
+
   Example of the final table creation statement：
-  
+
   ```sql
   CREATE TABLE IF NOT EXISTS `GRADE _M`(`st_id` INT comment '主键',
   `st_name` STRING comment '学生姓名 ',
@@ -195,7 +198,7 @@ The following are some simple examples of program applications. If you encounter
   --*column_name*：needs to be replaced with a field for bucketing
   --*bucket_num*：Need to be replaced with the number of buckets
   ```
-  
+
 #### Complete example
 ```python
 con = db_query('mysql','2**.*4.3*.***',3306,'xingxing','123456','db_name')
@@ -207,7 +210,6 @@ out5 = con.create_hivetab('st_info',1)  # Get the hive table statement template 
 out6 = con.ob_data('st_info') # Get the entire data of the st_info table
 con.con_close()  # Close the database connection after use
 ```
-
 
 
 ***
@@ -225,7 +227,7 @@ con.con_close()  # Close the database connection after use
 
 #### 使用示例：
 
-- **安装**
+##### - **安装**
 
   ```python
   pip install db_query
@@ -233,18 +235,18 @@ con.con_close()  # Close the database connection after use
 
 ---
 
-- **连接数据库**
+##### - **连接数据库**
 
   **参数:**
 
-  |    参数     | 类型 |                描述                |
-  | :---------: | :--: | :--------------------------------: |
-  |   db_type   | str  |             数据库类型             |
-  |     ip      | str  |               ip地址               |
-  |    port     | int  |                端口                |
-  |    user     | str  |               用户名               |
-  |     key     | str  |                密码                |
-  | dborsv_name | str  | 数据库名或者为服务名与模式名的结合 |
+|    参数     | 类型 |                描述                |
+| :---------: | :--: | :--------------------------------: |
+|   db_type   | str  |             数据库类型             |
+|     ip      | str  |               ip地址               |
+|    port     | int  |                端口                |
+|    user     | str  |               用户名               |
+|     key     | str  |                密码                |
+| dborsv_name | str  | 数据库名或者为服务名与模式名的结合 |
 
   以mysql为例:
 
@@ -260,7 +262,7 @@ con.con_close()  # Close the database connection after use
   con =db_query('oracle','ip',3306,'username','keyword','ORCL/TEST')
   ```
 
-- **查看连接成功与否**
+##### - **查看连接成功与否**
 
   ```python
   con.con_ok()
@@ -269,7 +271,8 @@ con.con_close()  # Close the database connection after use
   
   ```
 
-- **关闭连接（注意，用完及时关闭数据库，否则可能造成数据库进程卡住）**
+##### - **关闭连接**
+（注意，用完及时关闭数据库，否则可能造成数据库进程卡住）
 
   ```python
   con.con_close()
@@ -280,7 +283,7 @@ con.con_close()  # Close the database connection after use
 ---
 
 
-- **查询数据库内的所有表**
+##### - **查询数据库内的所有表**
 
   **参数:** 无
 
@@ -290,7 +293,7 @@ con.con_close()  # Close the database connection after use
   tab_list = con.ob_table_list()
   ```
 
-- **查询表内数据量**
+##### - **查询表内数据量**
 
   **参数:** 
 
@@ -302,7 +305,7 @@ con.con_close()  # Close the database connection after use
   rec_num = con.ob_recnum('tab_name')
   ```
 
-- **查询表的字段信息**
+##### - **查询表的字段信息**
 
   **参数:** 
 
@@ -314,7 +317,7 @@ con.con_close()  # Close the database connection after use
   col_inf = con.ob_colinfo(‘tab_name’)
   ```
 
-- **查询表的注释信息**
+##### - **查询表的注释信息**
 
   **参数:** 
 
@@ -326,7 +329,7 @@ con.con_close()  # Close the database connection after use
   tab_com = con. ob_tabcom(‘tab_name’)
   ```
 
-- **查询表内数据**
+##### - **查询表内数据**
   **参数:** 
 
    *tab_name*: 字符串 , 查询表的表名
@@ -341,7 +344,7 @@ con.con_close()  # Close the database connection after use
 
 ---
 
-- **执行数据库相关操作**
+##### - **执行数据库相关操作**
 
   **参数:** 
 
@@ -353,7 +356,7 @@ con.con_close()  # Close the database connection after use
   con_exe(sql_text)
   ```
 
-- **SQL语句查询**
+##### - **SQL语句查询**
 
   **参数:** 
 
@@ -367,16 +370,16 @@ con.con_close()  # Close the database connection after use
 
 ---
 
-- **根据字段信息生成hive建表语句**
+##### - **根据字段信息生成hive建表语句**
 
   数据迁移至hive中时，有时需要根据原数据库的查询信息生成hive的建表语句。
 
   **参数:** 
 
      *tab_name*: 字符串 , 查询表的表名
-
+    
      *table_type*: 整数型 , 0 意味着要在hive中建立中间表,1 意味着要在hive中建立事务表
-
+    
      *return*: 字符串形式的SQL语句
 
   **1. 中间表的建表语句**
@@ -426,4 +429,5 @@ out5 = con.create_hivetab('st_info',1)  # Get the hive table statement template 
 out6 = con.ob_data('st_info') # Get the entire data of the st_info table
 con.con_close()  # Close the database connection after use
 ```
+
 
