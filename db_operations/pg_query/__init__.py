@@ -1,1 +1,1 @@
-from .pg_query import con_pgsql
+from .con_pgsql import con_pgsql
