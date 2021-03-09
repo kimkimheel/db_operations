@@ -224,7 +224,7 @@ class db_query(object):
                 sql = 'SELECT * FROM ' + tab_name + ' ;'  # 获取表数据
         self.cur.execute(sql)
         rets = self.cur.fetchall()
-        print(rets)
+        # print(rets)
         # get the column name
         col_name = list(db_query.ob_colinfo(self,tab_name)[0])
         if len(rets):

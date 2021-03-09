@@ -427,4 +427,3 @@ out6 = con.ob_data('st_info') # Get the entire data of the st_info table
 con.con_close()  # Close the database connection after use
 ```
 
-
