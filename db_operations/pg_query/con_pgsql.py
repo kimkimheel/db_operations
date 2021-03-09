@@ -81,17 +81,3 @@ class con_pgsql(object):
         self.conn.close()
         print('already closed!')
 
-
-if __name__ == '__main__':
-    # # con = con_pgsql(dtbase,user,key,ip,port)
-    # con = con_pgsql("huanchongchi","stork", "stork","31.0.140.248",14103)
-    # # table_name = 'data_quality'
-    # # out = con.get_table(table_name)
-    # rec_num = con.con_res('select * from sjsb_log limit 10;')
-    # temp = con.ob_data('sjsb_log')
-    # dd = pd.DataFrame([{24, 'nancy'}])
-    # dd.rename(columns={0: 'id', 1: 'name'}, inplace=True)
-    # con.insert_values(dd,'test_a')
-    # print(rec_num)
-    # print(temp)
-    # con.closecone()
