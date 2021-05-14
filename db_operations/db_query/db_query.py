@@ -219,12 +219,13 @@ class db_query(object):
             if self.db_type == 'mysql':
                 sql = 'SELECT * FROM ' + tab_name + ' ;'  # 获取表数据
             elif self.db_type == 'oracle':
-                sql = 'SELECT * FROM ' + self.schema_name+'.'+tab_name + ' ;'  # 获取表数据
+                sql = 'SELECT * FROM ' + self.schema_name+'.'+tab_name   # 获取表数据
             else:
                 sql = 'SELECT * FROM ' + tab_name + ' ;'  # 获取表数据
+        print(sql)
         self.cur.execute(sql)
         rets = self.cur.fetchall()
-        # print(rets)
+        print(rets)
         # get the column name
         col_name = list(db_query.ob_colinfo(self,tab_name)[0])
         if len(rets):
@@ -302,5 +303,14 @@ class db_query(object):
         self.cur.close()
         self.conn.close()
         print('already closed!')
+
+
+if __name__ == '__main__':
+    conn = db_query('oracle','192.168.90.205',1521,'hst','hst','ORCL/HST')
+    conn.con_ok()
+    qaq = conn.con_res('SELECT * FROM hst.NEWS')
+    df = conn.ob_data('NEWS')
+    print(df)
+    conn.con_close()
 
 
