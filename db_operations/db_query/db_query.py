@@ -34,13 +34,17 @@ class db_query(object):
                        passwd=key,
                        db=dborsv_name)  # Connect to mysql
             self.schema_name = dborsv_name
-            connect_url = 'mysql+pymysql://%s:%s@localhost:%s/%s?charset=utf8' % \
-                          (self.user, self.key, str(self.port), self.dborsv_name)
+            connect_url = 'mysql+pymysql://%s:%s@%s:%s/%s' % \
+                          (self.user, self.key,self.ip,str(self.port), self.dborsv_name)
             self.db_connect = create_engine(connect_url)
         elif self.db_type == 'oracle':
             self.schema_name = dborsv_name.split('/')[1]
             addres = ip+':'+str(port)+'/'+dborsv_name.split('/')[0]
             self.conn = cx_Oracle.connect(user, key,addres)  # Connect to oracle
+            connect_url = 'oracle+cx_oracle://%s:%s@%s:%s/%s' % \
+                          (self.user, self.key,self.ip, str(self.port),dborsv_name.split('/')[0])
+            print(connect_url)
+            self.db_connect = create_engine(connect_url)
         else:
             ipparam = ip + ':' +str(port)
             self.conn = pymssql.connect(server=ipparam,
@@ -134,9 +138,11 @@ class db_query(object):
             # Get field name and field type
             sql_text0 = 'SELECT column_name,data_type FROM ALL_TAB_COLUMNS WHERE TABLE_NAME = \'%s\'' \
                         'and OWNER=\'%s\' order by column_id' % (tab_name,self.schema_name)
+            print(sql_text0)
             self.cur.execute(sql_text0)
             column_need = self.cur.fetchall()
             df_col0 = pd.DataFrame(column_need)
+            print("COL_DF",df_col0)
             # Get field description
             sql_text1 = 'select comments from all_col_comments WHERE TABLE_NAME = \'%s\' ' \
                         'and OWNER=\'%s\'' % (tab_name,self.schema_name)
@@ -301,11 +307,11 @@ class db_query(object):
         return sql_create_end
 
     def write_df(self,df_need,table_name):
-        try:
-            pd.io.sql.to_sql(df_need,table_name,self.db_connect,self.dborsv_name, if_exists='append',index=False)
-            return 1
-        except:
-            return 0
+        # try:
+        pd.io.sql.to_sql(df_need,table_name,self.db_connect,self.schema_name, if_exists='append',index=False)
+        return 1
+        # except:
+        #     return 0
 
     def con_close(self):
         """
@@ -316,12 +322,6 @@ class db_query(object):
         print('already closed!')
 
 
-if __name__ == '__main__':
-    conn = db_query('oracle','192.168.90.205',1521,'hst','hst','ORCL/HST')
-    conn.con_ok()
-    qaq = conn.con_res('SELECT * FROM hst.NEWS')
-    df = conn.ob_data('NEWS')
-    print(df)
-    conn.con_close()
+
 
 
