@@ -7,6 +7,7 @@ import pymysql
 import pymssql
 import cx_Oracle
 import pandas as pd
+from sqlalchemy import create_engine
 
 
 class db_query(object):
@@ -33,6 +34,9 @@ class db_query(object):
                        passwd=key,
                        db=dborsv_name)  # Connect to mysql
             self.schema_name = dborsv_name
+            connect_url = 'mysql+pymysql://%s:%s@localhost:%s/%s?charset=utf8' % \
+                          (self.user, self.key, str(self.port), self.dborsv_name)
+            self.db_connect = create_engine(connect_url)
         elif self.db_type == 'oracle':
             self.schema_name = dborsv_name.split('/')[1]
             addres = ip+':'+str(port)+'/'+dborsv_name.split('/')[0]
@@ -295,6 +299,13 @@ class db_query(object):
             sql_create_end = sql_create + sql_end1
 
         return sql_create_end
+
+    def write_df(self,df_need,table_name):
+        try:
+            pd.io.sql.to_sql(df_need,table_name,self.db_connect,self.dborsv_name, if_exists='append',index=False)
+            return 1
+        except:
+            return 0
 
     def con_close(self):
         """
