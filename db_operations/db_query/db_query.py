@@ -50,6 +50,9 @@ class db_query(object):
             self.conn = pymssql.connect(server=ipparam,
                        user=user,password=key,database=dborsv_name) # Connect to sqlserver
             self.schema_name = dborsv_name
+            connect_url = 'mssql+pymssql://%s:%s@%s:%s/%s' % \
+                          (self.user, self.key, self.ip, str(self.port), self.dborsv_name)
+            self.db_connect = create_engine(connect_url)
         self.cur = self.conn.cursor()
 
     def con_ok(self):
@@ -322,6 +325,19 @@ class db_query(object):
         print('already closed!')
 
 
-
+if __name__ == '__main__':
+    conn = db_query('oracle','localhost',1521,'system','Zqzu258liu','ORCL/TESTDB')
+    conn.con_ok()
+    tab_li = conn.ob_table_list()
+    qaq = conn.con_res('SELECT * FROM TESTDB."user"')
+    cc = conn.ob_colinfo('MOVIE')
+    print("columns",cc)
+    df = conn.ob_data('MOVIE')
+    print(df)
+    try_df = pd.DataFrame({"col1":[1,2,3,4],"col2":[2,4,6,8]})
+    print(try_df)
+    res = conn.write_df(try_df,"try_df")
+    print("res",res)
+    conn.con_close()
 
 
